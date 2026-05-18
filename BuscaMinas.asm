@@ -17,5 +17,57 @@ section. data
     msg_conf_e db 10, "Modo experto seleccionado con exito", 10, 0
     len_conf_e equ $ - msg_conf_e
 
+section .bss
+    ;reserva 2 bytes para la entrada del teclado (caracter y enter)
+    buffer_entrada resb 2
+
+    ; guarda el numero de minas configurado
+    minas_totales resb 1
 
 section. text
+    global inicio
+
+inicio:
+    ; muestra el menu de bienvenida
+    mov eax, 4
+    mov eax, 1
+    mov exc, msg_bienvenida
+    mov edx, len_bienvenida
+    int 0x80
+
+menu_dificultad:
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, msg_menu
+    mov edx, len_menu
+    int 0x80
+
+    ; entrada del usuario
+
+    mov eax, 3
+    mov ebx, 0
+    mov ecx, buffer_entrada
+    mov edx, 2
+    int 0x80
+
+    mov al, [buffer_entrada]
+
+    ; presiono 1
+    cmp al, '1'
+    je .selecciono_principiante
+
+    ; presiono 2
+    cmp al, '2'
+    je .selecciono_intermedio
+
+    ; presiono 3
+    cmp al, '3'
+    je .selecciono_experto
+
+    mov eax, 4
+    mov ebx, 1
+    mov ecx, msg_error
+    mov edx, len_error
+    int 0x80
+
+    jmp menu_dificultad
