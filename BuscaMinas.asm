@@ -1,4 +1,4 @@
-section. data
+section .data
     msg_bienvenida db "BIENVENIDO A BUSCAMINAS", 10, 0
     len_bienvenida equ $ - msg_bienvenida
 
@@ -9,7 +9,7 @@ section. data
     len_error equ $ - msg_error
 
     msg_conf_p db 10, "Modo principiante seleccionado con exito", 10, 0
-    len_conf_p $ - msg_conf_p
+    len_conf_p equ $ - msg_conf_p
 
     msg_conf_i db 10, "Modo intermedio seleccionado con exito", 10, 0
     len_conf_i equ $ - msg_conf_i
@@ -24,14 +24,14 @@ section .bss
     ; guarda el numero de minas configurado
     minas_totales resb 1
 
-section. text
+section .text
     global inicio
 
 inicio:
     ; muestra el menu de bienvenida
     mov eax, 4
-    mov eax, 1
-    mov exc, msg_bienvenida
+    mov ebx, 1
+    mov ecx, msg_bienvenida
     mov edx, len_bienvenida
     int 0x80
 
